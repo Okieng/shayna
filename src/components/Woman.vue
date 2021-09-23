@@ -94,6 +94,8 @@ export default {
       this.keranjangUser.push(productStored);
       const parsed = JSON.stringify(this.keranjangUser);
       localStorage.setItem("keranjangUser", parsed);
+
+      window.location.reload();
     },
   },
   mounted() {
@@ -101,6 +103,14 @@ export default {
       .get("http://127.0.0.1:8000/api/products")
       .then((res) => (this.products = res.data.data.data))
       .catch((err) => console.log(err));
+
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (e) {
+        localStorage.removeItem("keranjangUser");
+      }
+    }
   },
 };
 </script>
