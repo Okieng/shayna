@@ -51,7 +51,10 @@
                         <td class="p-price first-row">
                           ${{ keranjang.price }}
                         </td>
-                        <td class="delete-item">
+                        <td
+                          @click="removeItem(keranjangUser.index)"
+                          class="delete-item"
+                        >
                           <a href="#"
                             ><i class="material-icons">
                               close

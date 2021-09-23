@@ -49,7 +49,7 @@
                           </td>
                           <td class="si-text">
                             <div class="product-selected">
-                              <p>{{ keranjang.price }}</p>
+                              <p>${{ keranjang.price }}</p>
                               <h6>{{ keranjang.name }}</h6>
                             </div>
                           </td>
@@ -70,12 +70,15 @@
                   </div>
                   <div class="select-total">
                     <span>total:</span>
-                    <h5>$120.00</h5>
+                    <h5>${{ totalHarga }}</h5>
                   </div>
                   <div class="select-button">
-                    <router-link to="/cart">
-                      <a href="#" class="primary-btn view-card">VIEW CARD</a>
-                    </router-link>
+                    <a href="#" class="primary-btn view-card"
+                      ><router-link to="/cart" style="color:#FFF"
+                        >VIEW CARD</router-link
+                      ></a
+                    >
+
                     <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                   </div>
                 </div>
@@ -112,6 +115,13 @@ export default {
         localStorage.removeItem("keranjangUser");
       }
     }
+  },
+  computed: {
+    totalHarga() {
+      return this.keranjangUser.reduce(function(items, data) {
+        return items + data.price;
+      }, 0);
+    },
   },
 };
 </script>
