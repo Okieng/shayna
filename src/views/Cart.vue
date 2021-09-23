@@ -33,15 +33,24 @@
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
+                    <tbody v-if="keranjangUser.length > 0">
+                      <tr
+                        v-for="keranjang in keranjangUser"
+                        :key="keranjang.id"
+                      >
                         <td class="cart-pic first-row">
-                          <img src="img/cart-page/product-1.jpg" />
+                          <img
+                            class="photo-item"
+                            :src="keranjang.photo"
+                            alt=""
+                          />
                         </td>
                         <td class="cart-title first-row text-center">
-                          <h5>Pure Pineapple</h5>
+                          <h5>{{ keranjang.name }}</h5>
                         </td>
-                        <td class="p-price first-row">$60.00</td>
+                        <td class="p-price first-row">
+                          ${{ keranjang.price }}
+                        </td>
                         <td class="delete-item">
                           <a href="#"
                             ><i class="material-icons">
@@ -50,20 +59,14 @@
                           >
                         </td>
                       </tr>
+                    </tbody>
+                    <tbody v-else>
                       <tr>
-                        <td class="cart-pic first-row">
-                          <img src="img/cart-page/product-1.jpg" />
-                        </td>
-                        <td class="cart-title first-row text-center">
-                          <h5>Pure Pineapple</h5>
-                        </td>
-                        <td class="p-price first-row">$60.00</td>
-                        <td class="delete-item">
-                          <a href="#"
-                            ><i class="material-icons">
-                              close
-                            </i></a
-                          >
+                        <td colspan="4" class="text-center">
+                          <h5>
+                            Keranjang masih kosong, silahkan belanja terlebih
+                            dahulu
+                          </h5>
                         </td>
                       </tr>
                     </tbody>
@@ -74,7 +77,10 @@
                 <h4 class="mb-4 text-left">
                   Informasi Pembeli:
                 </h4>
-                <div class="user-checkout text-left">
+                <div
+                  class="user-checkout text-left"
+                  v-if="keranjangUser.length > 0"
+                >
                   <form>
                     <div class="form-group">
                       <label for="namaLengkap">Nama lengkap</label>
@@ -119,7 +125,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4" v-if="keranjangUser.length > 0">
             <div class="row">
               <div class="col-lg-12">
                 <div class="proceed-checkout">
@@ -165,6 +171,27 @@ export default {
   name: "Cart",
   components: {
     Header,
+  },
+  data() {
+    return {
+      keranjangUser: [],
+    };
+  },
+  methods: {
+    removeItem(index) {
+      this.keranjangUser.splice(index, 1);
+      const parsed = JSON.stringify(this.keranjangUser);
+      localStorage.setItem("keranjangUser", parsed);
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (e) {
+        localStorage.removeItem("keranjangUser");
+      }
+    }
   },
 };
 </script>
